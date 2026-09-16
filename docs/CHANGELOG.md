@@ -1,54 +1,76 @@
 # CHANGELOG
 
 ## 2026-09-17
- 
-+### Added — Phase 6 Marketplace Module (Community Bazaar) Complete
-+- **Backend APIs**:
-+  - Implemented `MarketplaceController` with minimal endpoints:
-+    - `GET /api/marketplace/categories` (lists categories with live listing count).
-+    - `GET /api/marketplace` (multi-field search by keyword, category, price bounds, condition, and sorting).
-+    - `GET /api/marketplace/{id}` (full detail with seller information, image gallery, and automatic view count increment).
-+    - `POST /api/marketplace/listings` (`ADD`, `EDIT`, `DELETE`, `STATUS` minimal action pattern).
-+    - Automatic assignment of `MARKETPLACE_SELLER` role to new sellers.
-+    - `GET /api/marketplace/my-listings` (seller's active and historical ads).
-+    - `POST /api/marketplace/favorites/{listingId}` & `DELETE /api/marketplace/favorites/{listingId}` (user bookmarks).
-+    - `GET /api/marketplace/favorites`.
-+  - Created `DTOs/MarketplaceDtos.cs` with full contract models.
-+  - Seeded initial realistic OLX listings and photo galleries in `database/SuperApp_Database.sql`.
-+- **Customer Flutter Marketplace Experience**:
-+  - Implemented `MarketplaceHomeScreen`:
-+    - Community Bazaar header with verified local seller assurance badge.
-+    - Cross-service search bar with debounce.
-+    - Horizontal scrolling category pills with icons (All, Mobiles, Vehicles, Electronics, Furniture, Fashion, Books, Sports, Others).
-+    - Quick filter chips (All, Featured, Under ₹10k, Like New).
-+    - 2-Column responsive product grid with condition badges (`LIKE NEW`, `BRAND NEW`, `GENTLY USED`), favorite heart toggle, bold prices (`₹68,000`), item titles, and location pins.
-+    - Floating Action Button `+ Sell Item` leading to quick post wizard.
-+  - Implemented `ListingDetailScreen`:
-+    - Full-width image gallery carousel with dynamic dot indicators.
-+    - Price display with "Negotiable" badge and total view count.
-+    - Highlights chips (Authentic Guaranteed, Original Bill & Box, Self Pickup, Fast Response).
-+    - Verified seller card with member tenure, rating score, and direct Chat & Call actions.
-+    - Safety guidelines card for physical transactions.
-+    - Persistent bottom action bar with "Chat" and "Make an Offer" modal sheet.
-+  - Implemented `AddListingScreen`:
-+    - Multi-photo upload manager with cover photo indicator and URL insertion dialog.
-+    - Form validation for category, title, price, condition, location, and description.
-+  - Updated `AppTextStyles` with standard typography getters (`h1`, `h2`, `h3`, `bodyLarge`, `bodyMedium`, `caption`).
-+  - Connected all routes in `app_router.dart`.
-+- **Verification**:
-+  - Backend `dotnet build SuperApp.sln`: 0 errors, 0 warnings.
-+  - Flutter `flutter test`: 100% passing.
-+  - Flutter `flutter analyze`: 0 issues found.
 
-+- **Backend APIs**:
-+  - Implemented `RidesController` (`POST /api/rides/estimate`, `POST /api/rides/book`, `GET /api/rides/{id}`, `GET /api/rides/my-rides`, `POST /api/rides/{id}/start`, `POST /api/rides/{id}/complete`, `POST /api/rides/{id}/cancel`, `POST /api/rides/{id}/rate`).
-+  - Built fare calculation engine covering Bike (base ₹25 + ₹8/km), Auto (base ₹35 + ₹12/km), and Cab (base ₹60 + ₹16/km).
-+  - Implemented 4-digit ride OTP generation and driver verification before ride start.
-+  - Complete ride status lifecycle: `REQUESTED` → `ASSIGNED` → `ACCEPTED` → `ARRIVING` → `STARTED` → `COMPLETED` → `CANCELLED`.
-+- **Customer Flutter Ride Experience**:
-+  - Implemented `RideBookingScreen` matching dark reference aesthetic:
-+    - Pickup and Drop-off location inputs with switch button.
-+    - Quick-select recent destination chips ("Indiranagar Metro", "Koramangala 5th Block").
+### Added — Phase 7 Admin Web Command Portal Complete
+- **Backend APIs**:
+  - Implemented `AdminController` with minimal endpoints:
+    - `GET /api/admin/dashboard` (aggregates platform KPIs: users, active drivers, gross food sales, ride fares, and platform commission).
+    - `GET /api/admin/users` & `POST /api/admin/users` (`STATUS` toggle and `ROLE` assignment/revocation).
+    - `GET /api/admin/restaurants` & `POST /api/admin/restaurants` (`ADD`, `EDIT`, `DELETE`, `STATUS`, `FEATURED`).
+    - `GET /api/admin/drivers` & `POST /api/admin/drivers` (`VERIFY` license and `STATUS` toggle).
+    - `GET /api/admin/coupons` & `POST /api/admin/coupons` (`ADD`, `EDIT`, `DELETE`, `STATUS`).
+    - `GET /api/admin/banners` & `POST /api/admin/banners` (`ADD`, `EDIT`, `DELETE`, `STATUS`).
+  - Created `DTOs/AdminDtos.cs` with full contract models.
+- **Admin Web Portal**:
+  - Implemented responsive single-page command dashboard at `SuperApp.API/wwwroot/admin/index.html`.
+  - 4 Real-time KPI summary cards (Total Users, Active Drivers, Food Gross Sales, Platform Revenue).
+  - Live platform audit trail table.
+  - 8 Interactive administration modules: Overview, Users & Roles, Restaurants & Food, Drivers Fleet & Verification, Bazaar Moderation, Coupons & Offers, Banners & Ads, System Settings.
+  - Full modal creation workflows for promotional coupons, restaurant onboarding, and status changes.
+- **Verification**:
+  - Backend `dotnet build SuperApp.sln`: 0 errors, 0 warnings.
+  - Flutter `flutter test`: 100% passing.
+  - Flutter `flutter analyze`: 0 issues found.
+
+### Added — Phase 6 Marketplace Module (Community Bazaar) Complete
+- **Backend APIs**:
+  - Implemented `MarketplaceController` with minimal endpoints:
+    - `GET /api/marketplace/categories` (lists categories with live listing count).
+    - `GET /api/marketplace` (multi-field search by keyword, category, price bounds, condition, and sorting).
+    - `GET /api/marketplace/{id}` (full detail with seller information, image gallery, and automatic view count increment).
+    - `POST /api/marketplace/listings` (`ADD`, `EDIT`, `DELETE`, `STATUS` minimal action pattern).
+    - Automatic assignment of `MARKETPLACE_SELLER` role to new sellers.
+    - `GET /api/marketplace/my-listings` (seller's active and historical ads).
+    - `POST /api/marketplace/favorites/{listingId}` & `DELETE /api/marketplace/favorites/{listingId}` (user bookmarks).
+    - `GET /api/marketplace/favorites`.
+  - Created `DTOs/MarketplaceDtos.cs` with full contract models.
+  - Seeded initial realistic OLX listings and photo galleries in `database/SuperApp_Database.sql`.
+- **Customer Flutter Marketplace Experience**:
+  - Implemented `MarketplaceHomeScreen`:
+    - Community Bazaar header with verified local seller assurance badge.
+    - Cross-service search bar with debounce.
+    - Horizontal scrolling category pills with icons (All, Mobiles, Vehicles, Electronics, Furniture, Fashion, Books, Sports, Others).
+    - Quick filter chips (All, Featured, Under ₹10k, Like New).
+    - 2-Column responsive product grid with condition badges (`LIKE NEW`, `BRAND NEW`, `GENTLY USED`), favorite heart toggle, bold prices (`₹68,000`), item titles, and location pins.
+    - Floating Action Button `+ Sell Item` leading to quick post wizard.
+  - Implemented `ListingDetailScreen`:
+    - Full-width image gallery carousel with dynamic dot indicators.
+    - Price display with "Negotiable" badge and total view count.
+    - Highlights chips (Authentic Guaranteed, Original Bill & Box, Self Pickup, Fast Response).
+    - Verified seller card with member tenure, rating score, and direct Chat & Call actions.
+    - Safety guidelines card for physical transactions.
+    - Persistent bottom action bar with "Chat" and "Make an Offer" modal sheet.
+  - Implemented `AddListingScreen`:
+    - Multi-photo upload manager with cover photo indicator and URL insertion dialog.
+    - Form validation for category, title, price, condition, location, and description.
+  - Updated `AppTextStyles` with standard typography getters (`h1`, `h2`, `h3`, `bodyLarge`, `bodyMedium`, `caption`).
+  - Connected all routes in `app_router.dart`.
+- **Verification**:
+  - Backend `dotnet build SuperApp.sln`: 0 errors, 0 warnings.
+  - Flutter `flutter test`: 100% passing.
+  - Flutter `flutter analyze`: 0 issues found.
+
+### Added — Phase 5 Ride Module (Rapido Concept) Complete
+- **Backend APIs**:
+  - Implemented `RidesController` (`POST /api/rides/estimate`, `POST /api/rides/book`, `GET /api/rides/{id}`, `GET /api/rides/my-rides`, `POST /api/rides/{id}/start`, `POST /api/rides/{id}/complete`, `POST /api/rides/{id}/cancel`, `POST /api/rides/{id}/rate`).
+  - Built fare calculation engine covering Bike (base ₹25 + ₹8/km), Auto (base ₹35 + ₹12/km), and Cab (base ₹60 + ₹16/km).
+  - Implemented 4-digit ride OTP generation and driver verification before ride start.
+  - Complete ride status lifecycle: `REQUESTED` → `ASSIGNED` → `ACCEPTED` → `ARRIVING` → `STARTED` → `COMPLETED` → `CANCELLED`.
+- **Customer Flutter Ride Experience**:
+  - Implemented `RideBookingScreen` matching dark reference aesthetic:
+    - Pickup and Drop-off location inputs with switch button.
+    - Quick-select recent destination chips ("Indiranagar Metro", "Koramangala 5th Block").
 +    - Interactive mock route visualizer with route path, pickup and drop pins, and distance/ETA chips.
 +    - Vehicle tier selector cards (`BIKE` - 4 mins ₹45, `AUTO` - 6 mins ₹68, `CAB` - 9 mins ₹120) with live price calculation and vehicle icons.
 +    - Payment method switcher and "Book Ride" CTA.
