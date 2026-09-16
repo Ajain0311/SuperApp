@@ -2,6 +2,28 @@
 
 ## 2026-09-17
 
+### Added — Phase 8 Integrations & Real-Time SignalR Abstractions Complete
+- **Backend SignalR Real-Time Hubs**:
+  - Implemented `RideTrackingHub` (`JoinRide`, `LeaveRide`, `UpdateDriverLocation`, `UpdateRideStatus`) with real-time GPS telemetry broadcast.
+  - Implemented `OrderStatusHub` (`JoinOrder`, `LeaveOrder`, `UpdateOrderStatus`) for live kitchen queue and delivery progress notifications.
+  - Implemented `ChatHub` (`JoinChat`, `LeaveChat`, `SendMessage`) for real-time buyer-seller marketplace communication.
+  - Mapped hub endpoints in `Program.cs` (`/hubs/ride`, `/hubs/order`, `/hubs/chat`).
+- **Backend Service Abstractions & Implementations**:
+  - Implemented `IPaymentService` & `MockPaymentService` with payment order generation, signature verification, and transaction auditing in `Payments` database table.
+  - Implemented `IMapService` & `MockMapService` with Haversine distance, urban road turns factor (1.25x), trip ETA estimation, and reverse geocoding.
+  - Implemented `INotificationService` & `MockNotificationService` with push notification simulation and in-app alert persistence.
+- **Backend API Endpoints**:
+  - Implemented `PaymentsController` (`POST /api/payments/create-order`, `POST /api/payments/verify`, `GET /api/payments/my-payments`).
+  - Implemented `NotificationsController` (`GET /api/notifications`, `PUT /api/notifications/{id}/read`, `PUT /api/notifications/read-all`).
+- **Flutter Client Real-Time Foundation**:
+  - Implemented `PaymentService` (`super_app/lib/core/services/payment_service.dart`).
+  - Implemented `LocationService` (`super_app/lib/core/services/location_service.dart`).
+  - Implemented `NotificationService` (`super_app/lib/core/services/notification_service.dart`).
+- **Verification**:
+  - Backend `dotnet build SuperApp.sln`: 0 errors, 0 warnings.
+  - Flutter `flutter test`: 100% passing.
+  - Flutter `flutter analyze`: 0 issues found.
+
 ### Added — Phase 7 Admin Web Command Portal Complete
 - **Backend APIs**:
   - Implemented `AdminController` with minimal endpoints:

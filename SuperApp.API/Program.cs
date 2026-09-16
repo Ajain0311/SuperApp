@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SuperApp.API.Data;
+using SuperApp.API.Hubs;
 using SuperApp.API.Middleware;
 using SuperApp.API.Services;
 
@@ -37,6 +38,12 @@ builder.Services.AddAuthorization();
 // --- Services ---
 builder.Services.AddScoped<IOtpService, MockOtpService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IPaymentService, MockPaymentService>();
+builder.Services.AddScoped<IMapService, MockMapService>();
+builder.Services.AddScoped<INotificationService, MockNotificationService>();
+
+// --- SignalR Real-Time Hubs ---
+builder.Services.AddSignalR();
 
 // --- Controllers ---
 builder.Services.AddControllers()
@@ -114,5 +121,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// --- Real-Time SignalR Hub Endpoints ---
+app.MapHub<RideTrackingHub>("/hubs/ride");
+app.MapHub<OrderStatusHub>("/hubs/order");
+app.MapHub<ChatHub>("/hubs/chat");
 
 app.Run();
