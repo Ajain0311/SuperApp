@@ -4,6 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:super_app/features/activity/screens/activity_screen.dart';
 import 'package:super_app/features/auth/screens/phone_entry_screen.dart';
 import 'package:super_app/features/auth/screens/otp_verification_screen.dart';
+import 'package:super_app/features/food/screens/food_home_screen.dart';
+import 'package:super_app/features/food/screens/food_order_tracking_screen.dart';
+import 'package:super_app/features/food/screens/restaurant_detail_screen.dart';
 import 'package:super_app/features/home/screens/home_screen.dart';
 import 'package:super_app/features/home/screens/main_shell_screen.dart';
 import 'package:super_app/features/notifications/screens/notifications_screen.dart';
@@ -49,6 +52,20 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           return ActivityScreen(initialTabIndex: initialTab);
         },
       ),
+      GoRoute(
+        path: '/food/restaurant/:id',
+        builder: (context, state) {
+          final id = state.pathParameters['id'] ?? '1';
+          return RestaurantDetailScreen(restaurantId: id);
+        },
+      ),
+      GoRoute(
+        path: '/food/order-tracking/:id',
+        builder: (context, state) {
+          final id = state.pathParameters['id'] ?? 'FO-1002';
+          return FoodOrderTrackingScreen(orderId: id);
+        },
+      ),
       ShellRoute(
         builder: (context, state, child) => MainShellScreen(child: child),
         routes: [
@@ -61,7 +78,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/food',
             pageBuilder: (context, state) => const NoTransitionPage(
-              child: _FoodPlaceholder(),
+              child: FoodHomeScreen(),
             ),
           ),
           GoRoute(
@@ -82,13 +99,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
   );
 });
 
-// Temporary placeholders for Phases 4, 5, 6
-class _FoodPlaceholder extends StatelessWidget {
-  const _FoodPlaceholder();
-  @override
-  Widget build(BuildContext context) => const Center(child: Text('Food Module'));
-}
-
+// Temporary placeholders for Phases 5 & 6
 class _RidesPlaceholder extends StatelessWidget {
   const _RidesPlaceholder();
   @override

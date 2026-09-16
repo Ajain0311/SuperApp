@@ -1,54 +1,80 @@
 # Food Module Documentation
 
-The Food Module handles end-to-end food delivery operations for the Super App.
+The Food Module handles end-to-end food delivery operations for the Super App, spanning customer discovery, dish customization, order placement, backend validation, and the restaurant vendor kitchen console.
+
+---
 
 ## 1. User Flows
 
 ### Customer Flow
-1. **Discovery**: Browse restaurants on the Food Tab, filter by 'Fast Delivery', 'Pure Veg', 'Offers', or 'Rating'.
-2. **Menu Selection**: View a restaurant's menu. Tap on an item to customize.
-3. **Customization**: A bottom sheet appears for portion sizes, add-ons, and quantity.
-4. **Checkout**: Cart validation ensures items are from a single restaurant. Apply coupons, review subtotal, delivery fee, tax, and final amount.
-5. **Tracking**: Track the order via a status stepper once placed.
+1. **Discovery (`FoodHomeScreen`)**:
+   - Location-aware restaurant feed.
+   - Filter chips: `Rating 4.0+`, `Fast Delivery`, `Pure Veg`, `Offers`.
+   - Category navigation: `Biryani`, `North Indian`, `South Indian`, `Burgers`, `Rolls`, `Desserts`.
+   - Restaurant cards with time badges (`22 mins`), offer overlays (`60% OFF UPTO ₹120`), rating badges, and price for two.
+2. **Menu Selection (`RestaurantDetailScreen`)**:
+   - Restaurant hero details with rating and cuisines.
+   - Category selector tabs: `All`, `Biryani Specials`, `Starters`, `Desserts`.
+   - Food item cards with Veg/Non-Veg indicators, `BESTSELLER` badges, descriptions, and `ADD +` buttons with `CUSTOMISABLE` labels.
+3. **Item Customization (`ItemCustomizationSheet`)**:
+   - Portion selection: `Regular Portion` (Included) vs `Jumbo Pack` (+₹210).
+   - Add-ons checklist: `Boondi Raita Bowl` (+₹35), `Extra Mirchi Ka Salan` (+₹45).
+   - Dynamic total price recalculation and quantity stepper `[- 1 +]`.
+4. **Cart Summary & Checkout (`CartSummarySheet`)**:
+   - Single restaurant policy enforcement.
+   - Live item list with portion and addon summaries.
+   - Bill breakdown: Item Total, Free Delivery Partner Fee, Govt. Taxes & Packaging (5%), and Grand Total.
+5. **Live Tracking (`FoodOrderTrackingScreen`)**:
+   - ETA countdown banner ("22 Mins • On Time").
+   - Multi-step progress tracker (`Order Received` → `Kitchen Preparing` → `Ready for Pickup` → `Out for Delivery` → `Delivered`).
+   - Delivery partner contact card with direct call capability.
 
 ### Restaurant Owner Flow
-1. **Incoming Orders**: See incoming orders on the Restaurant Panel Dashboard.
-2. **Order Management**: Accept order, mark as 'Preparing', then 'Ready' when done.
-3. **Menu Management**: Update availability, prices, and add new items or categories.
+1. **Vendor Portal (`/vendor/index.html`)**:
+   - Live metrics: Today's Orders, Kitchen Pending, Completed Today, Today's Sales.
+   - Live Kitchen Queue table with order action buttons (`Accept Order`, `Mark Ready`).
+   - Menu & In-Stock Management: In-stock toggle and dish creation.
+   - Strict tenant isolation: owners can only access restaurants linked via `RestaurantUsers`.
 
-### Admin Flow
-1. **Verification**: Verify new restaurant registrations.
-2. **Oversight**: Manage platform fees, handle disputes, and oversee overall platform metrics.
+---
 
-## 2. Order States and Transitions
-The lifecycle of a food order is represented by the following states:
-- `PENDING`: Order placed by customer, waiting for restaurant to accept.
-- `ACCEPTED`: Restaurant has accepted the order.
-- `PREPARING`: Kitchen is preparing the food.
-- `READY`: Food is ready, waiting for driver pickup (or customer if self-pickup).
-- `PICKED_UP`: Delivery partner has picked up the food.
-- `DELIVERED`: Food handed over to customer.
-- `CANCELLED`: Order cancelled by customer, restaurant, or admin.
+## 2. Order States and Lifecycle Transitions
 
-**Transition Rules:**
-- `PENDING` -> `ACCEPTED` (by Restaurant)
-- `PENDING` -> `CANCELLED` (by Customer/Restaurant)
-- `ACCEPTED` -> `PREPARING` (by Restaurant)
-- `PREPARING` -> `READY` (by Restaurant)
-- `READY` -> `PICKED_UP` (by Driver)
-- `PICKED_UP` -> `DELIVERED` (by Driver)
+```
+[ PENDING ] ──▶ [ ACCEPTED ] ──▶ [ PREPARING ] ──▶ [ READY ] ──▶ [ PICKED_UP ] ──▶ [ DELIVERED ]
+     │                 │
+     ▼                 ▼
+[ CANCELLED ]    [ CANCELLED ]
+```
 
-## 3. Cart Logic
-- **Single Restaurant Policy**: A cart can only contain items from one restaurant at a time. If a user tries to add an item from Restaurant B while having items from Restaurant A, prompt them to clear the cart first.
+---
 
-## 4. Price Calculation Logic
-Price calculations happen sequentially:
-1. **ItemTotal** = BasePrice - ItemDiscount + AddonsCost + VariantsCost
-2. **SubTotal** = Sum of all ItemTotals in cart
-3. **DiscountedTotal** = SubTotal - CouponDiscount (if coupon applied and valid)
-4. **GrandTotal** = DiscountedTotal + DeliveryFee + Tax
+## 3. Implemented Backend APIs
 
-## 5. Restaurant Ownership Validation
-Backend systems must enforce strict authorization checks:
-- Endpoints modifying restaurant data (menus, details, orders) must verify that the requesting user's ID matches the `owner_id` of the restaurant, or that the user has the `ADMIN` role.
-- Security middleware should validate ownership tokens before accessing or mutating `/api/restaurants/:id/*`.
+| Endpoint | Method | Description |
+|---|---|---|
+| `/api/restaurants` | `GET` | List active restaurants with search, veg-only filter, and pagination |
+| `/api/restaurants/{id}` | `GET` | Full restaurant details with categories, food items, variants, and addons |
+| `/api/food-orders` | `POST` | Place food order with server-side price recalculation and coupon application |
+| `/api/food-orders` | `GET` | Customer order history |
+| `/api/food-orders/{id}` | `GET` | Single order details |
+| `/api/food-orders/{id}/cancel` | `POST` | Cancel pending/accepted order |
+| `/api/coupons/validate` | `POST` | Validate coupon code, check min order amount, calculate percentage/flat discounts |
+| `/api/vendor/my-restaurant` | `GET` | Vendor store profile |
+| `/api/vendor/food-items` | `POST` | Minimal API action pattern (`ADD`, `EDIT`, `DELETE`, `STATUS`) for dishes |
+| `/api/vendor/orders` | `GET` | Vendor kitchen queue |
+| `/api/vendor/orders/{id}/status` | `PUT` | Advance kitchen order status |
+| `/api/vendor/dashboard` | `GET` | Vendor metrics (today's orders, pending, completed, sales) |
+| `/vendor/index.html` | `GET` | Responsive vendor web management application |
+
+---
+
+## 4. Price & Discount Calculation Formula
+
+All calculations are enforced on the backend to prevent client tampering:
+1. `UnitBasePrice` = Item `DiscountedPrice` (computed: `BasePrice * (1 - DiscountPercent / 100)`)
+2. `LineItemPrice` = `(UnitBasePrice + VariantAdditionalPrice + Sum(SelectedAddons)) * Quantity`
+3. `SubTotal` = `Sum(LineItemPrices)`
+4. `CouponDiscount` = Calculated on `SubTotal` (Percentage with `MaxDiscount` cap or Flat)
+5. `TaxAmount` = `(SubTotal - CouponDiscount) * 0.05` (5% GST)
+6. `GrandTotal` = `SubTotal - CouponDiscount + DeliveryFee + TaxAmount`

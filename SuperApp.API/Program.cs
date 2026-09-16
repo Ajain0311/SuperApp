@@ -107,6 +107,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("AllowAll");
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 app.UseAuthentication();
 app.UseAuthorization();
 

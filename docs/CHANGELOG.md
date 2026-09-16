@@ -2,6 +2,27 @@
 
 ## 2026-09-16
 
+### Added — Phase 4 Food Module & Restaurant Vendor Panel Complete
+- **Backend APIs**:
+  - Implemented `RestaurantsController` (`GET /api/restaurants`, `GET /api/restaurants/{id}`).
+  - Implemented `CouponsController` (`POST /api/coupons/validate` with min order, percentage cap & flat discount rules).
+  - Implemented `FoodOrdersController` (`POST /api/food-orders` with server-side price recalculation, `GET /api/food-orders`, `GET /api/food-orders/{id}`, `POST /api/food-orders/{id}/cancel`).
+  - Implemented `VendorController` with tenant ownership verification: `GET /api/vendor/my-restaurant`, `POST /api/vendor/food-items` (minimal API action pattern `ADD`, `EDIT`, `DELETE`, `STATUS`), `GET /api/vendor/orders`, `PUT /api/vendor/orders/{id}/status`, and `GET /api/vendor/dashboard`.
+  - Enabled static files in `Program.cs`.
+- **Restaurant Vendor Web Management Panel**:
+  - Built responsive HTML5/CSS3/JS portal served at `SuperApp.API/wwwroot/vendor/index.html`.
+  - Real-time order metrics, live kitchen order queue, and dish stock management.
+- **Customer Flutter Food Experience**:
+  - Implemented `FoodHomeScreen` matching reference design (location bar, search, filter chips `Rating 4.0+`, `Fast Delivery`, `Pure Veg`, `Offers`, category pills, restaurant cards with time badges, offer banners, and rating badges).
+  - Implemented `RestaurantDetailScreen` matching reference design (restaurant header, category tabs, bestseller tags, dish descriptions, right-aligned dish photos, and `ADD +` button with `CUSTOMISABLE` labels).
+  - Implemented `ItemCustomizationSheet` bottom sheet matching reference design (portion radio selection, add-on checkboxes, quantity stepper, dynamic total calculation).
+  - Implemented `CartSummarySheet` bottom sheet matching reference design (item lines, bill details breakdown, Clear button, Place Order button).
+  - Implemented `FoodOrderTrackingScreen` (estimated delivery countdown, multi-step progress stepper, delivery driver profile with direct call option).
+- **Verification**:
+  - Backend `dotnet build SuperApp.sln`: 0 errors, 0 warnings.
+  - Flutter `flutter test`: 100% passing.
+  - Flutter `flutter analyze`: 0 issues found.
+
 ### Added — Phase 3 Customer Application Shell Complete
 - Implemented `HomeScreen` matching reference screenshots:
   - Deliver-to location header with avatar shortcut
