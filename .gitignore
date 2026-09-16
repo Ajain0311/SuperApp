@@ -1,0 +1,155 @@
+# ==============================================================================
+# SuperApp Root Git Ignore
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# .NET / C# / Visual Studio / Rider
+# ------------------------------------------------------------------------------
+**/[Bb]in/
+**/[Oo]bj/
+**/[Oo]ut/
+**/*.dll
+**/*.pdb
+**/*.exe
+**/*.user
+**/*.userosscache
+**/*.suo
+**/*.userprefs
+**/*.vsidx
+**/*.vsp
+**/*.vspx
+**/*.sap
+**/*.DotSettings.user
+.vs/
+_ReSharper*/
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+publish/
+**/App_Data/
+*.Publish.xml
+*.pubxml
+*.azurePubxml
+
+# ------------------------------------------------------------------------------
+# Flutter / Dart
+# ------------------------------------------------------------------------------
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.packages
+**/.pub-cache/
+**/.pub/
+**/build/
+**/ephemeral/
+**/flutter_export_environment.sh
+
+# Flutter Android specific
+**/android/app/debug/
+**/android/app/profile/
+**/android/app/release/
+**/android/.gradle/
+**/android/captures/
+**/android/gradlew
+**/android/gradlew.bat
+**/android/local.properties
+**/android/**/GeneratedPluginRegistrant.java
+
+# Flutter iOS specific
+**/ios/.symlinks/
+**/ios/Pods/
+**/ios/Podfile.lock
+**/ios/**/GeneratedPluginRegistrant.h
+**/ios/**/GeneratedPluginRegistrant.m
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/app.flx
+**/ios/Flutter/app.zip
+**/ios/Flutter/flutter_assets/
+**/ios/ServiceDefinitions.json
+
+# Flutter Web specific
+**/web/splash/
+
+# ------------------------------------------------------------------------------
+# IDEs & Editors
+# ------------------------------------------------------------------------------
+# JetBrains (IntelliJ, Android Studio, Rider)
+.idea/
+*.iml
+*.iws
+*.ipr
+cmake-build-*/
+
+# VS Code (ignore user state, keep shared settings if created)
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# ------------------------------------------------------------------------------
+# Operating System
+# ------------------------------------------------------------------------------
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# ------------------------------------------------------------------------------
+# Logs & Temporary Files
+# ------------------------------------------------------------------------------
+*.log
+logs/
+log/
+temp/
+tmp/
+*.tmp
+*.temp
+*.swp
+*~
+*.bak
+*.patch
+
+# ------------------------------------------------------------------------------
+# Secrets, Keys, Credentials & Private Config
+# NEVER COMMIT CREDENTIALS OR REAL SECRETS
+# ------------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+secrets/
+credentials/
+*.pem
+*.key
+*.pfx
+*.p12
+*.jks
+*.keystore
+id_rsa
+id_rsa.pub
+appsettings.Production.json
+**/secrets.json
+**/google-services.json
+**/GoogleService-Info.plist
+
+# ------------------------------------------------------------------------------
+# Explicitly Tracked Assets & Critical Files (Do Not Ignore)
+# ------------------------------------------------------------------------------
+!*.sln
+!*.slnx
+!*.csproj
+!pubspec.yaml
+!pubspec.lock
+!README.md
+!docs/**
+!agents/**
