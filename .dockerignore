@@ -1,0 +1,17 @@
+**/.git
+**/.vs
+**/.vscode
+**/.idea
+**/bin
+**/obj
+**/TestResults
+**/publish
+**/super_app
+**/docs
+**/agents
+*.md
+*.log
+*.tmp
+database/
+WhatsApp Unknown 2026-09-16 at 22.26.26/
+antigravity prompt.txt

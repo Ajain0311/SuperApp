@@ -1,0 +1,81 @@
+name: SuperApp CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  backend-ci:
+    name: Backend Build & Automated Tests (.NET 10)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore Dependencies
+        run: dotnet restore SuperApp.sln
+
+      - name: Build Solution
+        run: dotnet build SuperApp.sln --configuration Release --no-restore
+
+      - name: Run Automated Test Suite
+        run: dotnet test SuperApp.sln --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage"
+
+  mobile-ci:
+    name: Flutter Customer App QA & Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Flutter SDK
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.x'
+          channel: 'stable'
+          cache: true
+
+      - name: Install Flutter Dependencies
+        working-directory: ./super_app
+        run: flutter pub get
+
+      - name: Verify Code Formatting & Static Analysis
+        working-directory: ./super_app
+        run: flutter analyze
+
+      - name: Run Flutter Automated Widget & Unit Tests
+        working-directory: ./super_app
+        run: flutter test
+
+  container-build-check:
+    name: Docker Image Build Validation
+    runs-on: ubuntu-latest
+    needs: [backend-ci]
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: actions/setup-buildx-action@v3
+
+      - name: Build SuperApp Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: false
+          tags: superapp-api:test
