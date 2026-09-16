@@ -119,6 +119,8 @@ tmp/
 *~
 *.bak
 *.patch
+WhatsApp*/
+antigravity prompt.txt
 
 # ------------------------------------------------------------------------------
 # Secrets, Keys, Credentials & Private Config

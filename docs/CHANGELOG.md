@@ -1,6 +1,32 @@
 # CHANGELOG
 
-## 2026-09-16
+## 2026-09-17
+ 
++### Added — Phase 5 Ride Module (Rapido Concept) Complete
++- **Backend APIs**:
++  - Implemented `RidesController` (`POST /api/rides/estimate`, `POST /api/rides/book`, `GET /api/rides/{id}`, `GET /api/rides/my-rides`, `POST /api/rides/{id}/start`, `POST /api/rides/{id}/complete`, `POST /api/rides/{id}/cancel`, `POST /api/rides/{id}/rate`).
++  - Built fare calculation engine covering Bike (base ₹25 + ₹8/km), Auto (base ₹35 + ₹12/km), and Cab (base ₹60 + ₹16/km).
++  - Implemented 4-digit ride OTP generation and driver verification before ride start.
++  - Complete ride status lifecycle: `REQUESTED` → `ASSIGNED` → `ACCEPTED` → `ARRIVING` → `STARTED` → `COMPLETED` → `CANCELLED`.
++- **Customer Flutter Ride Experience**:
++  - Implemented `RideBookingScreen` matching dark reference aesthetic:
++    - Pickup and Drop-off location inputs with switch button.
++    - Quick-select recent destination chips ("Indiranagar Metro", "Koramangala 5th Block").
++    - Interactive mock route visualizer with route path, pickup and drop pins, and distance/ETA chips.
++    - Vehicle tier selector cards (`BIKE` - 4 mins ₹45, `AUTO` - 6 mins ₹68, `CAB` - 9 mins ₹120) with live price calculation and vehicle icons.
++    - Payment method switcher and "Book Ride" CTA.
++  - Implemented `ActiveRideScreen` matching reference design:
++    - Ride status bar with ETA and ride code.
++    - Prominent OTP verification box (`4829`) to share with driver.
++    - Driver card with avatar, rating (`4.8 ★`), trips count, vehicle model (`KA-05-MQ-9821`), and phone call action.
++    - Live trip progress stepper (Driver Assigned → Arriving → Ride in Progress → Reached Destination).
++    - Emergency SOS button with red alert theme and Cancel Ride options.
++- **Verification**:
++  - Backend `dotnet build SuperApp.sln`: 0 errors, 0 warnings.
++  - Flutter `flutter test`: 100% passing.
++  - Flutter `flutter analyze`: 0 issues found.
++
++## 2026-09-16
 
 ### Added — Phase 4 Food Module & Restaurant Vendor Panel Complete
 - **Backend APIs**:

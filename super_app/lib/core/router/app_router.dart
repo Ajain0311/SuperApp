@@ -11,6 +11,8 @@ import 'package:super_app/features/home/screens/home_screen.dart';
 import 'package:super_app/features/home/screens/main_shell_screen.dart';
 import 'package:super_app/features/notifications/screens/notifications_screen.dart';
 import 'package:super_app/features/profile/screens/profile_screen.dart';
+import 'package:super_app/features/ride/screens/active_ride_screen.dart';
+import 'package:super_app/features/ride/screens/ride_booking_screen.dart';
 import 'package:super_app/features/splash/screens/splash_screen.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
@@ -52,6 +54,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           return ActivityScreen(initialTabIndex: initialTab);
         },
       ),
+      // Food routes
       GoRoute(
         path: '/food/restaurant/:id',
         builder: (context, state) {
@@ -64,6 +67,14 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) {
           final id = state.pathParameters['id'] ?? 'FO-1002';
           return FoodOrderTrackingScreen(orderId: id);
+        },
+      ),
+      // Ride routes
+      GoRoute(
+        path: '/rides/active/:id',
+        builder: (context, state) {
+          final id = state.pathParameters['id'] ?? 'RD-5021';
+          return ActiveRideScreen(rideId: id);
         },
       ),
       ShellRoute(
@@ -84,7 +95,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/rides',
             pageBuilder: (context, state) => const NoTransitionPage(
-              child: _RidesPlaceholder(),
+              child: RideBookingScreen(),
             ),
           ),
           GoRoute(
@@ -99,13 +110,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
   );
 });
 
-// Temporary placeholders for Phases 5 & 6
-class _RidesPlaceholder extends StatelessWidget {
-  const _RidesPlaceholder();
-  @override
-  Widget build(BuildContext context) => const Center(child: Text('Rides Module'));
-}
-
+// Temporary placeholder for Phase 6 Marketplace
 class _BazaarPlaceholder extends StatelessWidget {
   const _BazaarPlaceholder();
   @override
