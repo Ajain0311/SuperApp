@@ -8,11 +8,15 @@ class MainShellScreen extends StatelessWidget {
   const MainShellScreen({super.key, required this.child});
 
   int _calculateSelectedIndex(BuildContext context) {
-    final location = GoRouterState.of(context).uri.path;
-    if (location.startsWith('/food')) return 1;
-    if (location.startsWith('/rides')) return 2;
-    if (location.startsWith('/bazaar')) return 3;
-    return 0;
+    try {
+      final location = GoRouterState.of(context).uri.path;
+      if (location.startsWith('/food')) return 1;
+      if (location.startsWith('/rides')) return 2;
+      if (location.startsWith('/bazaar')) return 3;
+      return 0;
+    } catch (_) {
+      return 0;
+    }
   }
 
   void _onItemTapped(BuildContext context, int index) {
