@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:super_app/core/constants/api_constants.dart';
@@ -44,7 +45,7 @@ class ApiClient {
     _dio.interceptors.add(LogInterceptor(
       requestBody: true,
       responseBody: true,
-      logPrint: (obj) => print('[API] $obj'),
+      logPrint: (obj) => debugPrint('[API] $obj'),
     ));
   }
 

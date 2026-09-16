@@ -40,6 +40,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
 
     final apiClient = ref.read(apiClientProvider);
     final token = await apiClient.getToken();
+    if (!mounted) return;
 
     if (token != null && token.isNotEmpty) {
       context.go('/home');

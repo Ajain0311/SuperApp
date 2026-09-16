@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:super_app/features/activity/screens/activity_screen.dart';
 import 'package:super_app/features/auth/screens/phone_entry_screen.dart';
 import 'package:super_app/features/auth/screens/otp_verification_screen.dart';
+import 'package:super_app/features/home/screens/home_screen.dart';
 import 'package:super_app/features/home/screens/main_shell_screen.dart';
+import 'package:super_app/features/notifications/screens/notifications_screen.dart';
+import 'package:super_app/features/profile/screens/profile_screen.dart';
 import 'package:super_app/features/splash/screens/splash_screen.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
@@ -29,13 +33,29 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           );
         },
       ),
+      GoRoute(
+        path: '/profile',
+        builder: (context, state) => const ProfileScreen(),
+      ),
+      GoRoute(
+        path: '/notifications',
+        builder: (context, state) => const NotificationsScreen(),
+      ),
+      GoRoute(
+        path: '/activity',
+        builder: (context, state) {
+          final tabStr = state.uri.queryParameters['tab'];
+          final initialTab = int.tryParse(tabStr ?? '0') ?? 0;
+          return ActivityScreen(initialTabIndex: initialTab);
+        },
+      ),
       ShellRoute(
         builder: (context, state, child) => MainShellScreen(child: child),
         routes: [
           GoRoute(
             path: '/home',
             pageBuilder: (context, state) => const NoTransitionPage(
-              child: _HomePlaceholder(),
+              child: HomeScreen(),
             ),
           ),
           GoRoute(
@@ -62,27 +82,21 @@ final appRouterProvider = Provider<GoRouter>((ref) {
   );
 });
 
-// Temporary placeholders - will be replaced with actual screens
-class _HomePlaceholder extends StatelessWidget {
-  const _HomePlaceholder();
-  @override
-  Widget build(BuildContext context) => const Center(child: Text('Home'));
-}
-
+// Temporary placeholders for Phases 4, 5, 6
 class _FoodPlaceholder extends StatelessWidget {
   const _FoodPlaceholder();
   @override
-  Widget build(BuildContext context) => const Center(child: Text('Food'));
+  Widget build(BuildContext context) => const Center(child: Text('Food Module'));
 }
 
 class _RidesPlaceholder extends StatelessWidget {
   const _RidesPlaceholder();
   @override
-  Widget build(BuildContext context) => const Center(child: Text('Rides'));
+  Widget build(BuildContext context) => const Center(child: Text('Rides Module'));
 }
 
 class _BazaarPlaceholder extends StatelessWidget {
   const _BazaarPlaceholder();
   @override
-  Widget build(BuildContext context) => const Center(child: Text('Bazaar'));
+  Widget build(BuildContext context) => const Center(child: Text('Bazaar Module'));
 }
