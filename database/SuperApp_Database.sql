@@ -831,6 +831,44 @@ IF NOT EXISTS (SELECT 1 FROM [dbo].[FoodItemAddons] WHERE [Id] = 2)
 SET IDENTITY_INSERT [dbo].[FoodItemAddons] OFF;
 GO
 
+-- Seed Marketplace Listings
+SET IDENTITY_INSERT [dbo].[MarketplaceListings] ON;
+IF NOT EXISTS (SELECT 1 FROM [dbo].[MarketplaceListings] WHERE [Id] = 1)
+BEGIN
+    INSERT INTO [dbo].[MarketplaceListings] ([Id], [UserId], [CategoryId], [Title], [Description], [Price], [Condition], [Location], [Status], [IsFeatured], [ViewCount], [IsActive], [CreatedAt])
+    VALUES (1, 1, 1, N'iPhone 14 Pro Max 256GB Deep Purple (Like New)', N'Battery health 94%, pristine condition with apple box, genuine charging cable and invoice.', 68000.00, N'LIKE_NEW', N'Koramangala, Bengaluru', N'ACTIVE', 1, 142, 1, SYSUTCDATETIME());
+END
+IF NOT EXISTS (SELECT 1 FROM [dbo].[MarketplaceListings] WHERE [Id] = 2)
+BEGIN
+    INSERT INTO [dbo].[MarketplaceListings] ([Id], [UserId], [CategoryId], [Title], [Description], [Price], [Condition], [Location], [Status], [IsFeatured], [ViewCount], [IsActive], [CreatedAt])
+    VALUES (2, 1, 2, N'Royal Enfield Classic 350 (2022 Stealth Black)', N'Single owner, 12,000 km driven, showroom serviced with comprehensive insurance valid till Nov 2027.', 145000.00, N'USED', N'Indiranagar, Bengaluru', N'ACTIVE', 1, 310, 1, SYSUTCDATETIME());
+END
+IF NOT EXISTS (SELECT 1 FROM [dbo].[MarketplaceListings] WHERE [Id] = 3)
+BEGIN
+    INSERT INTO [dbo].[MarketplaceListings] ([Id], [UserId], [CategoryId], [Title], [Description], [Price], [Condition], [Location], [Status], [IsFeatured], [ViewCount], [IsActive], [CreatedAt])
+    VALUES (3, 1, 3, N'Sony PlayStation 5 Disc Edition + 2 Controllers', N'Hardly played, comes with Spider-Man 2 disc and dual charging dock.', 38500.00, N'LIKE_NEW', N'HSR Layout, Bengaluru', N'ACTIVE', 0, 98, 1, SYSUTCDATETIME());
+END
+IF NOT EXISTS (SELECT 1 FROM [dbo].[MarketplaceListings] WHERE [Id] = 4)
+BEGIN
+    INSERT INTO [dbo].[MarketplaceListings] ([Id], [UserId], [CategoryId], [Title], [Description], [Price], [Condition], [Location], [Status], [IsFeatured], [ViewCount], [IsActive], [CreatedAt])
+    VALUES (4, 1, 4, N'Solid Sheesham Teak Wood 6-Seater Dining Table', N'Made of pure Sheesham wood with cushioned chairs. Relocation sale.', 22000.00, N'USED', N'Whitefield, Bengaluru', N'ACTIVE', 0, 74, 1, SYSUTCDATETIME());
+END
+SET IDENTITY_INSERT [dbo].[MarketplaceListings] OFF;
+GO
+
+-- Seed Listing Images
+SET IDENTITY_INSERT [dbo].[ListingImages] ON;
+IF NOT EXISTS (SELECT 1 FROM [dbo].[ListingImages] WHERE [Id] = 1)
+    INSERT INTO [dbo].[ListingImages] ([Id], [ListingId], [ImageUrl], [SortOrder]) VALUES (1, 1, N'https://images.unsplash.com/photo-1591337676887-a217a6970a8a?w=600', 1);
+IF NOT EXISTS (SELECT 1 FROM [dbo].[ListingImages] WHERE [Id] = 2)
+    INSERT INTO [dbo].[ListingImages] ([Id], [ListingId], [ImageUrl], [SortOrder]) VALUES (2, 2, N'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=600', 1);
+IF NOT EXISTS (SELECT 1 FROM [dbo].[ListingImages] WHERE [Id] = 3)
+    INSERT INTO [dbo].[ListingImages] ([Id], [ListingId], [ImageUrl], [SortOrder]) VALUES (3, 3, N'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600', 1);
+IF NOT EXISTS (SELECT 1 FROM [dbo].[ListingImages] WHERE [Id] = 4)
+    INSERT INTO [dbo].[ListingImages] ([Id], [ListingId], [ImageUrl], [SortOrder]) VALUES (4, 4, N'https://images.unsplash.com/photo-1617806118233-18e1de247200?w=600', 1);
+SET IDENTITY_INSERT [dbo].[ListingImages] OFF;
+GO
+
 PRINT '==============================================================================';
 PRINT 'SuperApp Database Schema & Seed Data successfully initialized!';
 PRINT '==============================================================================';

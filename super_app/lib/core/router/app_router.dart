@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:super_app/features/activity/screens/activity_screen.dart';
@@ -9,6 +8,9 @@ import 'package:super_app/features/food/screens/food_order_tracking_screen.dart'
 import 'package:super_app/features/food/screens/restaurant_detail_screen.dart';
 import 'package:super_app/features/home/screens/home_screen.dart';
 import 'package:super_app/features/home/screens/main_shell_screen.dart';
+import 'package:super_app/features/marketplace/screens/add_listing_screen.dart';
+import 'package:super_app/features/marketplace/screens/listing_detail_screen.dart';
+import 'package:super_app/features/marketplace/screens/marketplace_home_screen.dart';
 import 'package:super_app/features/notifications/screens/notifications_screen.dart';
 import 'package:super_app/features/profile/screens/profile_screen.dart';
 import 'package:super_app/features/ride/screens/active_ride_screen.dart';
@@ -77,6 +79,18 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           return ActiveRideScreen(rideId: id);
         },
       ),
+      // Marketplace routes
+      GoRoute(
+        path: '/bazaar/detail/:id',
+        builder: (context, state) {
+          final id = state.pathParameters['id'] ?? '101';
+          return ListingDetailScreen(listingId: id);
+        },
+      ),
+      GoRoute(
+        path: '/bazaar/add',
+        builder: (context, state) => const AddListingScreen(),
+      ),
       ShellRoute(
         builder: (context, state, child) => MainShellScreen(child: child),
         routes: [
@@ -101,7 +115,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/bazaar',
             pageBuilder: (context, state) => const NoTransitionPage(
-              child: _BazaarPlaceholder(),
+              child: MarketplaceHomeScreen(),
             ),
           ),
         ],
@@ -109,10 +123,3 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     ],
   );
 });
-
-// Temporary placeholder for Phase 6 Marketplace
-class _BazaarPlaceholder extends StatelessWidget {
-  const _BazaarPlaceholder();
-  @override
-  Widget build(BuildContext context) => const Center(child: Text('Bazaar Module'));
-}

@@ -2,7 +2,44 @@
 
 ## 2026-09-17
  
-+### Added — Phase 5 Ride Module (Rapido Concept) Complete
++### Added — Phase 6 Marketplace Module (Community Bazaar) Complete
++- **Backend APIs**:
++  - Implemented `MarketplaceController` with minimal endpoints:
++    - `GET /api/marketplace/categories` (lists categories with live listing count).
++    - `GET /api/marketplace` (multi-field search by keyword, category, price bounds, condition, and sorting).
++    - `GET /api/marketplace/{id}` (full detail with seller information, image gallery, and automatic view count increment).
++    - `POST /api/marketplace/listings` (`ADD`, `EDIT`, `DELETE`, `STATUS` minimal action pattern).
++    - Automatic assignment of `MARKETPLACE_SELLER` role to new sellers.
++    - `GET /api/marketplace/my-listings` (seller's active and historical ads).
++    - `POST /api/marketplace/favorites/{listingId}` & `DELETE /api/marketplace/favorites/{listingId}` (user bookmarks).
++    - `GET /api/marketplace/favorites`.
++  - Created `DTOs/MarketplaceDtos.cs` with full contract models.
++  - Seeded initial realistic OLX listings and photo galleries in `database/SuperApp_Database.sql`.
++- **Customer Flutter Marketplace Experience**:
++  - Implemented `MarketplaceHomeScreen`:
++    - Community Bazaar header with verified local seller assurance badge.
++    - Cross-service search bar with debounce.
++    - Horizontal scrolling category pills with icons (All, Mobiles, Vehicles, Electronics, Furniture, Fashion, Books, Sports, Others).
++    - Quick filter chips (All, Featured, Under ₹10k, Like New).
++    - 2-Column responsive product grid with condition badges (`LIKE NEW`, `BRAND NEW`, `GENTLY USED`), favorite heart toggle, bold prices (`₹68,000`), item titles, and location pins.
++    - Floating Action Button `+ Sell Item` leading to quick post wizard.
++  - Implemented `ListingDetailScreen`:
++    - Full-width image gallery carousel with dynamic dot indicators.
++    - Price display with "Negotiable" badge and total view count.
++    - Highlights chips (Authentic Guaranteed, Original Bill & Box, Self Pickup, Fast Response).
++    - Verified seller card with member tenure, rating score, and direct Chat & Call actions.
++    - Safety guidelines card for physical transactions.
++    - Persistent bottom action bar with "Chat" and "Make an Offer" modal sheet.
++  - Implemented `AddListingScreen`:
++    - Multi-photo upload manager with cover photo indicator and URL insertion dialog.
++    - Form validation for category, title, price, condition, location, and description.
++  - Updated `AppTextStyles` with standard typography getters (`h1`, `h2`, `h3`, `bodyLarge`, `bodyMedium`, `caption`).
++  - Connected all routes in `app_router.dart`.
++- **Verification**:
++  - Backend `dotnet build SuperApp.sln`: 0 errors, 0 warnings.
++  - Flutter `flutter test`: 100% passing.
++  - Flutter `flutter analyze`: 0 issues found.
+
 +- **Backend APIs**:
 +  - Implemented `RidesController` (`POST /api/rides/estimate`, `POST /api/rides/book`, `GET /api/rides/{id}`, `GET /api/rides/my-rides`, `POST /api/rides/{id}/start`, `POST /api/rides/{id}/complete`, `POST /api/rides/{id}/cancel`, `POST /api/rides/{id}/rate`).
 +  - Built fare calculation engine covering Bike (base ₹25 + ₹8/km), Auto (base ₹35 + ₹12/km), and Cab (base ₹60 + ₹16/km).

@@ -1,8 +1,8 @@
 # PROJECT STATUS — SINGLE SOURCE OF TRUTH
 
 ## Project: Super App
-## Current Phase: Phase 5 Complete | Phase 6 (Marketplace Module) Active
-## Phase Status: Phase 1 COMPLETE | Multi-Agent Setup COMPLETE | Phase 2 COMPLETE | Phase 3 COMPLETE | Phase 4 COMPLETE | Phase 5 COMPLETE | Phase 6 IN PROGRESS
+## Current Phase: Phase 6 Complete | Phase 7 (Admin Web Panel) Active
+## Phase Status: Phase 1 COMPLETE | Multi-Agent Setup COMPLETE | Phase 2 COMPLETE | Phase 3 COMPLETE | Phase 4 COMPLETE | Phase 5 COMPLETE | Phase 6 COMPLETE | Phase 7 IN PROGRESS
 
 ---
 
@@ -83,27 +83,67 @@
   - Backend: `dotnet build SuperApp.sln` (**0 warnings, 0 errors**)
   - Flutter: `flutter test` (100% passing), `flutter analyze` (**0 issues found**)
 
+### Phase 6 — Marketplace Module (OLX Concept)
+- [x] Backend Marketplace Controller & DTOs:
+  - `MarketplaceController` with minimal endpoints:
+    - `GET /api/marketplace/categories` (with listing count)
+    - `GET /api/marketplace` (multi-attribute filtering by category, search, min/max price, condition, sort order, and pagination)
+    - `GET /api/marketplace/{id}` (full details with seller profile, image array, and automatic view count increment)
+    - `POST /api/marketplace/listings` with minimal action pattern (`ADD`, `EDIT`, `DELETE`, `STATUS`)
+    - Auto-role assignment of `MARKETPLACE_SELLER` when a user creates their first ad
+    - `GET /api/marketplace/my-listings` (current user's ads)
+    - `POST /api/marketplace/favorites/{listingId}` & `DELETE /api/marketplace/favorites/{listingId}`
+    - `GET /api/marketplace/favorites`
+  - Seed listings and photos in `database/SuperApp_Database.sql`
+- [x] Customer Flutter Marketplace Experience:
+  - `MarketplaceHomeScreen`:
+    - Header with Community Bazaar badge, verified seller trust indicator, and cross-service search bar
+    - Horizontal category pills (All, Mobiles, Vehicles, Electronics, Furniture, Fashion, Books, Sports, Others)
+    - Quick filter chips (All, Featured, Under ₹10k, Like New)
+    - 2-Column responsive product grid with condition badges, favorite heart toggle, bold prices, and location pins
+    - Floating "+ Sell Item" action button
+  - `ListingDetailScreen`:
+    - Full-screen photo gallery carousel with page indicators
+    - Price and negotiable tag, condition badge, views count, and highlights chips
+    - Seller profile card with verified badge, member tenure, rating, and quick chat/call actions
+    - Safety advisory banner for secure physical handovers
+    - Persistent bottom action bar with "Chat" and "Make an Offer" modal sheet
+  - `AddListingScreen`:
+    - Multi-photo upload manager with cover photo indicator and URL insertion dialog
+    - Category picker, item title, price, condition selector chips, location, and description fields
+    - Client-side validation and immediate grid insertion on submission
+- [x] Verification:
+  - Backend: `dotnet build SuperApp.sln` (**0 warnings, 0 errors**)
+  - Flutter: `flutter test` (100% passing), `flutter analyze` (**0 issues found**)
+
 ---
 
 ## IN PROGRESS 🔄
 
-### Phase 6 — Marketplace Module (OLX Concept)
-- [ ] Backend Marketplace Controller & DTOs:
-  - `POST /api/marketplace/listings` with minimal action pattern (`ADD`, `EDIT`, `DELETE`, `STATUS`)
-  - `GET /api/marketplace` with category, keyword search, price filtering, and pagination
-  - `GET /api/marketplace/{id}` with listing details, seller info, and view count increment
-  - `POST /api/marketplace/favorites/{listingId}` toggle
-  - `GET /api/marketplace/my-listings`
-- [ ] Customer Flutter Marketplace Experience:
-  - `MarketplaceHomeScreen` with search, category pills, condition badges, and 2-column product grid with price badges
-  - `ListingDetailScreen` with image gallery, seller profile, condition badge, price card, and contact action
-  - `AddListingScreen` with photo picker simulation, category selector, title, price, condition, and location inputs
+### Phase 7 — Admin Web Panel (Central Command Portal)
+- [ ] Backend Admin Controller with minimal action APIs:
+  - `GET /api/admin/dashboard` (platform-wide KPIs: gross sales, total users, active rides, food orders, listings)
+  - `POST /api/admin/users` action pattern (`STATUS`, `ROLE`)
+  - `POST /api/admin/restaurants` action pattern (`ADD`, `EDIT`, `DELETE`, `STATUS`)
+  - `POST /api/admin/drivers` action pattern (`STATUS`, `VERIFY`)
+  - `POST /api/admin/coupons` action pattern (`ADD`, `EDIT`, `DELETE`, `STATUS`)
+  - `POST /api/admin/banners` action pattern (`ADD`, `EDIT`, `DELETE`, `STATUS`)
+  - Paginated audit queries: `GET /api/admin/orders`, `GET /api/admin/rides`, `GET /api/admin/listings`
+- [ ] Admin Web Portal (`SuperApp.API/wwwroot/admin/index.html`):
+  - Responsive single-page web dashboard with modern dark theme matching the design system
+  - High-level platform metrics cards (Total Users, Active Drivers, Food Orders, Marketplace Ads)
+  - Tabbed management console:
+    - Overview & Revenue Charts
+    - Users & Role Management
+    - Restaurant & Menu Control
+    - Driver Fleet & Verification
+    - Marketplace Listings Moderation
+    - Promotional Coupons & Banners Management
 
 ---
 
 ## PENDING ⏳
 
-- [ ] Phase 7: Admin web panel (global platform control, metrics dashboard)
 - [ ] Phase 8: Integrations (Payment gateway, maps, push notifications, SignalR hubs)
 - [ ] Phase 9: Automated testing suite, regression checks, UI polish
 - [ ] Phase 10: Release preparation
