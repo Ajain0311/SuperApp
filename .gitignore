@@ -143,6 +143,9 @@ appsettings.Production.json
 **/secrets.json
 **/google-services.json
 **/GoogleService-Info.plist
+/docs/CREDENTIALS.local.md
+docs/CREDENTIALS.local.md
+*.local.md
 
 # ------------------------------------------------------------------------------
 # Explicitly Tracked Assets & Critical Files (Do Not Ignore)
@@ -155,3 +158,10 @@ appsettings.Production.json
 !README.md
 !docs/**
 !agents/**
+
+# ------------------------------------------------------------------------------
+# Local Credentials (Strictly Untracked)
+# ------------------------------------------------------------------------------
+docs/CREDENTIALS.local.md
+/docs/CREDENTIALS.local.md
+*.local.md

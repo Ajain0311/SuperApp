@@ -2,6 +2,11 @@
 
 ## 2026-09-17
 
+### Added — Credential Configuration Templates & Security Hygiene
+- Created [`docs/CREDENTIALS.example.md`](file:///D:/HTTPclient1/docs/CREDENTIALS.example.md) with comprehensive blank placeholder fields across 14 service categories (SMS, Maps, Payments, Firebase, Azure Storage, SQL Server, JWT, Email, WhatsApp, Redis, RabbitMQ, Domains, Android, iOS).
+- Created untracked local template [`docs/CREDENTIALS.local.md`](file:///D:/HTTPclient1/docs/CREDENTIALS.local.md) for manual operator entry.
+- Updated [`.gitignore`](file:///D:/HTTPclient1/.gitignore) to strictly prevent any `CREDENTIALS.local.md` or `*.local.md` file from being tracked or pushed.
+
 ### Milestone — Full SuperApp Platform Pushed to Remote (origin/main)
 - Successfully deployed and pushed all 10 roadmap phases to `origin/main` (`https://github.com/Ajain0311/SuperApp.git`).
 - Verified 100% test pass rate across backend (34 xUnit tests) and mobile client (4 Flutter widget tests) with zero compiler or analyzer warnings.

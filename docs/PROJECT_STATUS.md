@@ -195,10 +195,16 @@ All 10 development roadmap phases are fully implemented, tested, and documented.
 
 > **Manual Execution**: Run [`database/SuperApp_Database.sql`](../database/SuperApp_Database.sql) against your SQL Server instance when convenient. All code currently builds and tests cleanly without blocking runtime development.
 
+## CREDENTIAL TEMPLATE & ENVIRONMENT CONFIGURATION
+
+- **Local Credential Template**: [`docs/CREDENTIALS.local.md`](../docs/CREDENTIALS.local.md) (Strictly Git-ignored for manual input)
+- **Public Credential Template**: [`docs/CREDENTIALS.example.md`](../docs/CREDENTIALS.example.md) (Safe committed template with blank placeholders)
+- **Security Guarantee**: Real credentials, API keys, and connection strings must only reside in environment variables or uncommitted local files.
+
 ---
 
 ## ARCHITECTURE & GIT HYGIENE
 
-- **Last Commit**: `addc94f` (All 10 phases pushed to `origin/main`)
-- **Remote**: `https://github.com/Ajain0311/SuperApp.git` (Synchronized)
-- **Zero Secrets / Zero Build Artifacts**: All transient build outputs strictly ignored.
+- **Last Commit**: `9741f3f` (Synchronized with `origin/main`)
+- **Remote**: `https://github.com/Ajain0311/SuperApp.git`
+- **Zero Secrets / Zero Build Artifacts**: All transient build outputs and local credentials strictly ignored.
