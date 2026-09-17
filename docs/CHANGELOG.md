@@ -2,6 +2,23 @@
 
 ## 2026-09-17
 
+### Added — Environment-Driven, Provider-Agnostic & Migratable Architecture
+- **Root Environment Template**: Created [`.env.example`](file:///D:/HTTPclient1/.env.example) containing clean placeholders for all external services, database providers, JWT parameters, and cloud integrations.
+- **Provider Abstractions & Implementations**:
+  - Implemented `IStorageService`, `LocalStorageService` (development zero-credential file storage in `wwwroot/uploads/`), and `AzureBlobStorageService` (production cloud storage with graceful offline fallback).
+  - Updated `Program.cs` to resolve all external services (`IOtpService`, `IMapService`, `IPaymentService`, `IStorageService`, `INotificationService`) dynamically via configuration and environment variables (`OTP_PROVIDER`, `MAP_PROVIDER`, `PAYMENT_PROVIDER`, `STORAGE_PROVIDER`, `NOTIFICATION_PROVIDER`).
+  - Added `Microsoft.EntityFrameworkCore.InMemory` support (`DATABASE_PROVIDER=InMemory`) for zero-database development and integration testing.
+  - Standardized database name to `SuperAppDB` across all SQL scripts, configurations, and Docker orchestration files.
+- **Frontend Environment Switching (Flutter)**:
+  - Created `AppEnvironment` supporting build-time environment switching (`dev`, `staging`, `prod`) and custom API URL overrides via `--dart-define=API_BASE_URL=...` and `--dart-define=ENV=...`.
+  - Updated `ApiConstants.baseUrl` to dynamically read from `AppEnvironment`.
+- **Architectural Documentation**:
+  - Created [`docs/ENVIRONMENT_CONFIGURATION.md`](file:///D:/HTTPclient1/docs/ENVIRONMENT_CONFIGURATION.md).
+  - Created [`docs/PROVIDER_MIGRATION.md`](file:///D:/HTTPclient1/docs/PROVIDER_MIGRATION.md).
+  - Created [`docs/DATABASE_MIGRATION.md`](file:///D:/HTTPclient1/docs/DATABASE_MIGRATION.md).
+- **Automated Testing**:
+  - Added unit test suite `StorageAndProviderTests.cs` covering file uploads, deletion, and URL resolution in `SuperApp.API.Tests`. All 36 tests pass cleanly.
+
 ### Added — Credential Configuration Templates & Security Hygiene
 - Created [`docs/CREDENTIALS.example.md`](file:///D:/HTTPclient1/docs/CREDENTIALS.example.md) with comprehensive blank placeholder fields across 14 service categories (SMS, Maps, Payments, Firebase, Azure Storage, SQL Server, JWT, Email, WhatsApp, Redis, RabbitMQ, Domains, Android, iOS).
 - Created untracked local template [`docs/CREDENTIALS.local.md`](file:///D:/HTTPclient1/docs/CREDENTIALS.local.md) for manual operator entry.

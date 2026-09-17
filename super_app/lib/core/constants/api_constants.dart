@@ -1,8 +1,10 @@
+import 'package:super_app/core/config/app_environment.dart';
+
 class ApiConstants {
   ApiConstants._();
 
-  // Change this to your local IP for physical device testing
-  static const String baseUrl = 'http://10.0.2.2:5000/api';
+  /// Environment-driven API base URL
+  static String get baseUrl => AppEnvironment.baseUrl;
   
   // Auth
   static const String sendOtp = '/auth/send-otp';

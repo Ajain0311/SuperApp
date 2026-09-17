@@ -31,11 +31,16 @@ services:
       - "5000:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ConnectionStrings__DefaultConnection=Server=superapp-db,1433;Database=SuperAppDb;User Id=sa;Password=SuperApp_Prod_Password_2026!;TrustServerCertificate=true;MultipleActiveResultSets=true;
+      - ConnectionStrings__DefaultConnection=Server=superapp-db,1433;Database=SuperAppDB;User Id=sa;Password=SuperApp_Prod_Password_2026!;TrustServerCertificate=true;MultipleActiveResultSets=true;
       - Jwt__Secret=SuperApp_Production_Master_Secret_Key_2026_Minimum_64_Chars_For_HmacSha256_Compliance_Secure_Token
       - Jwt__Issuer=SuperAppProduction
       - Jwt__Audience=SuperAppAudience
       - Jwt__ExpiryDays=30
+      - Providers__Storage=Local
+      - Providers__Otp=Mock
+      - Providers__Map=Mock
+      - Providers__Payment=Mock
+      - Providers__Notification=Mock
     depends_on:
       superapp-db:
         condition: service_healthy

@@ -11,18 +11,18 @@ GO
 -- ------------------------------------------------------------------------------
 -- 01. DATABASE INITIALIZATION
 -- ------------------------------------------------------------------------------
-IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = N'SuperAppDb')
+IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = N'SuperAppDB')
 BEGIN
-    CREATE DATABASE [SuperAppDb];
-    PRINT 'Database SuperAppDb created successfully.';
+    CREATE DATABASE [SuperAppDB];
+    PRINT 'Database SuperAppDB created successfully.';
 END
 ELSE
 BEGIN
-    PRINT 'Database SuperAppDb already exists.';
+    PRINT 'Database SuperAppDB already exists.';
 END
 GO
 
-USE [SuperAppDb];
+USE [SuperAppDB];
 GO
 
 -- ------------------------------------------------------------------------------

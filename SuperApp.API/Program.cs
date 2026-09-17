@@ -10,13 +10,41 @@ using SuperApp.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// --- Database ---
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+// --- Database Configuration (Environment-driven & Provider-agnostic) ---
+var dbProvider = Environment.GetEnvironmentVariable("DATABASE_PROVIDER") 
+    ?? builder.Configuration["Database:Provider"] 
+    ?? "SqlServer";
 
-// --- Authentication ---
-var jwtSecret = builder.Configuration["Jwt:Secret"] 
+var dbConnectionString = Environment.GetEnvironmentVariable("DATABASE_CONNECTION_STRING")
+    ?? builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? "Server=localhost;Database=SuperAppDB;Trusted_Connection=true;TrustServerCertificate=true;MultipleActiveResultSets=true;";
+
+if (string.Equals(dbProvider, "InMemory", StringComparison.OrdinalIgnoreCase))
+{
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseInMemoryDatabase("SuperAppInMemoryDb"));
+}
+else
+{
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseSqlServer(dbConnectionString, sqlOptions =>
+        {
+            sqlOptions.EnableRetryOnFailure(maxRetryCount: 3, maxRetryDelay: TimeSpan.FromSeconds(5), errorNumbersToAdd: null);
+        }));
+}
+
+// --- Authentication (Environment-driven JWT) ---
+var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET")
+    ?? builder.Configuration["Jwt:Secret"] 
     ?? "SuperApp_Development_Secret_Key_2026_Must_Be_At_Least_32_Characters";
+
+var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER")
+    ?? builder.Configuration["Jwt:Issuer"] 
+    ?? "SuperApp";
+
+var jwtAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE")
+    ?? builder.Configuration["Jwt:Audience"] 
+    ?? "SuperApp";
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -27,20 +55,56 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"] ?? "SuperApp",
-            ValidAudience = builder.Configuration["Jwt:Audience"] ?? "SuperApp",
+            ValidIssuer = jwtIssuer,
+            ValidAudience = jwtAudience,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret))
         };
     });
 
 builder.Services.AddAuthorization();
 
-// --- Services ---
+// --- Provider-Agnostic External Service Abstractions ---
+// 1. Storage Provider (Local by default; Azure in production)
+var storageProvider = Environment.GetEnvironmentVariable("STORAGE_PROVIDER") 
+    ?? builder.Configuration["Providers:Storage"] 
+    ?? "Local";
+
+builder.Services.AddScoped<LocalStorageService>();
+if (string.Equals(storageProvider, "Azure", StringComparison.OrdinalIgnoreCase))
+{
+    builder.Services.AddScoped<IStorageService, AzureBlobStorageService>();
+}
+else
+{
+    builder.Services.AddScoped<IStorageService, LocalStorageService>();
+}
+
+// 2. OTP / SMS Provider (Mock in development; Karix/Twilio in production)
+var otpProvider = Environment.GetEnvironmentVariable("OTP_PROVIDER") 
+    ?? builder.Configuration["Providers:Otp"] 
+    ?? "Mock";
 builder.Services.AddScoped<IOtpService, MockOtpService>();
-builder.Services.AddScoped<ITokenService, TokenService>();
+
+// 3. Payment Gateway Provider (Mock in development; Razorpay/Cashfree in production)
+var paymentProvider = Environment.GetEnvironmentVariable("PAYMENT_PROVIDER") 
+    ?? builder.Configuration["Providers:Payment"] 
+    ?? "Mock";
 builder.Services.AddScoped<IPaymentService, MockPaymentService>();
+
+// 4. Map & Location Provider (Mock in development; Google Maps/Mapbox in production)
+var mapProvider = Environment.GetEnvironmentVariable("MAP_PROVIDER") 
+    ?? builder.Configuration["Providers:Map"] 
+    ?? "Mock";
 builder.Services.AddScoped<IMapService, MockMapService>();
+
+// 5. Notification Provider (Mock in development; Firebase FCM in production)
+var notificationProvider = Environment.GetEnvironmentVariable("NOTIFICATION_PROVIDER") 
+    ?? builder.Configuration["Providers:Notification"] 
+    ?? "Mock";
 builder.Services.AddScoped<INotificationService, MockNotificationService>();
+
+// 6. Security & Identity Tokens
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 // --- SignalR Real-Time Hubs ---
 builder.Services.AddSignalR();

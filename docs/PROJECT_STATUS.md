@@ -195,11 +195,21 @@ All 10 development roadmap phases are fully implemented, tested, and documented.
 
 > **Manual Execution**: Run [`database/SuperApp_Database.sql`](../database/SuperApp_Database.sql) against your SQL Server instance when convenient. All code currently builds and tests cleanly without blocking runtime development.
 
-## CREDENTIAL TEMPLATE & ENVIRONMENT CONFIGURATION
+## ENVIRONMENT-DRIVEN & PROVIDER-AGNOSTIC ARCHITECTURE ✅
 
-- **Local Credential Template**: [`docs/CREDENTIALS.local.md`](../docs/CREDENTIALS.local.md) (Strictly Git-ignored for manual input)
-- **Public Credential Template**: [`docs/CREDENTIALS.example.md`](../docs/CREDENTIALS.example.md) (Safe committed template with blank placeholders)
-- **Security Guarantee**: Real credentials, API keys, and connection strings must only reside in environment variables or uncommitted local files.
+- **Environment-Driven Configuration**: Master template [`.env.example`](../.env.example) with blank placeholders.
+- **Provider Abstractions & Zero-Blocked Development**:
+  - `IOtpService` (`MockOtpService` active by default; OTP `123456`)
+  - `IMapService` (`MockMapService` active by default; Haversine + road factor)
+  - `IPaymentService` (`MockPaymentService` active by default; mock orders & signatures)
+  - `IStorageService` (`LocalStorageService` active by default; `AzureBlobStorageService` for production)
+  - `INotificationService` (`MockNotificationService` active by default; persisted to database)
+- **Frontend Environment Switching**: Flutter `AppEnvironment` supports build-time switching via `--dart-define=ENV=staging|prod` or `--dart-define=API_BASE_URL=...` without code rewrites.
+- **Database Architecture**: `SuperAppDB` centralized idempotent script in `database/SuperApp_Database.sql`, EF Core InMemory support (`DATABASE_PROVIDER=InMemory`), and migration guide [`docs/DATABASE_MIGRATION.md`](../docs/DATABASE_MIGRATION.md).
+- **Comprehensive Documentation**:
+  - [`docs/ENVIRONMENT_CONFIGURATION.md`](../docs/ENVIRONMENT_CONFIGURATION.md)
+  - [`docs/PROVIDER_MIGRATION.md`](../docs/PROVIDER_MIGRATION.md)
+  - [`docs/DATABASE_MIGRATION.md`](../docs/DATABASE_MIGRATION.md)
 
 ---
 
